@@ -1,54 +1,25 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| Application Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register all of the routes for an application.
+| It's a breeze. Simply tell Laravel the URIs it should respond to
+| and give it the controller to call when that URI is requested.
+|
+*/
+use \app\Http\Controllers\CategoryController
 use Illuminate\Support\Facades\Route;
-use \App\Http\Controllers\NewsController;
-use App\Http\Controllers\Admin\NewsController as AdminNewsController;
+Route::group( 
+	['prefix'=>'Controllers', 'as'=> 'news::'];
+	function(){	
+		Route::get('/','CategoryController@index')->name('index');
+ 
+		Route::get('category/{id}','CategoryController@actionCategory')->where('id','[0-9]+')->name('categories');
+		Route::get('card/{id}','CategoryController@actionCard')->where('id'=>'[0-9]+')->name('card');
 
-
-Route::get('/', function () {
-    return view('welcome');
 });
 
-/**
- * Новости
- */
-Route::group([
-    'prefix' => 'news',
-    'as' => 'news::'
-], function() {
-
-    Route::get('/', [NewsController::class, 'index'])
-        ->name("categories");
-
-    Route::get('/card/{id}', [NewsController::class, 'card'])
-        ->where('id', '[0-9]+')
-        ->name('card');
-
-    Route::get('/{categoryId}', [NewsController::class, 'list'])
-        ->where('id', '[0-9]+')
-        ->name('list');
-});
-
-
-
-
-
-
-/** Админка новостей */
-Route::group([
-    'prefix' => '/admin/news',
-    'as' => 'admin::news::',
-], function () {
-    Route::get('/', [AdminNewsController::class, 'index'] )
-        ->name('index');
-    Route::get( '/create',[AdminNewsController::class, 'create'])
-        ->name('create');
-    Route::post( '/save',[AdminNewsController::class, 'save'])
-        ->name('save');
-
-    Route::get('/update',[AdminNewsController::class, 'update'])
-        ->name('update');
-    Route::get('/delete',[AdminNewsController::class, 'delete'])
-        ->name('delete');
-});
-
+		
